@@ -19,15 +19,14 @@
       },
       "options": { "activate": true, "targetFolderName": "test-inc" }
     },
-    { "step": "mkdir", "path": "/wordpress/setup" },
     {
       "step": "writeFile",
-      "path": "/wordpress/setup/seed.php",
+      "path": "/wordpress/wp-content/demo-seed.php",
       "data": {
         "resource": "url",
         "url": "https://raw.githubusercontent.com/IKENORIICHI/wp-demo-corporate/main/setup/seed.php"
       }
     },
-    { "step": "runPHP", "code": "<?php require '/wordpress/setup/seed.php';" }
+    { "step": "runPHP", "code": "<?php require '/wordpress/wp-content/demo-seed.php';" }
   ]
 }
