@@ -11,6 +11,12 @@
 - メニューは「外観 → メニュー」から編集可能
 - スマホ対応
 
+## デモを開く
+
+https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/IKENORIICHI/wp-demo-corporate/main/blueprint.json
+
+ブラウザ内で WordPress が起動します（表示まで10〜20秒）。管理画面（/wp-admin/）も操作できます。変更はブラウザを閉じると消えます。
+
 ## ローカルで動かす
 
 ```bash

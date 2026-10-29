@@ -1,0 +1,32 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "meta": {
+    "title": "テスト株式会社 WordPress テーマ（制作サンプル）",
+    "author": "IKENORIICHI"
+  },
+  "landingPage": "/",
+  "preferredVersions": { "php": "8.2", "wp": "latest" },
+  "steps": [
+    { "step": "login" },
+    { "step": "setSiteLanguage", "language": "ja" },
+    {
+      "step": "installTheme",
+      "themeData": {
+        "resource": "git:directory",
+        "url": "https://github.com/IKENORIICHI/wp-demo-corporate",
+        "ref": "main",
+        "path": "theme/test-inc"
+      },
+      "options": { "activate": true, "targetFolderName": "test-inc" }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/setup/seed.php",
+      "data": {
+        "resource": "url",
+        "url": "https://raw.githubusercontent.com/IKENORIICHI/wp-demo-corporate/main/setup/seed.php"
+      }
+    },
+    { "step": "runPHP", "code": "<?php require '/wordpress/setup/seed.php';" }
+  ]
+}
