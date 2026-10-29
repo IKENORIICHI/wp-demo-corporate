@@ -19,6 +19,7 @@
       },
       "options": { "activate": true, "targetFolderName": "test-inc" }
     },
+    { "step": "mkdir", "path": "/wordpress/setup" },
     {
       "step": "writeFile",
       "path": "/wordpress/setup/seed.php",
