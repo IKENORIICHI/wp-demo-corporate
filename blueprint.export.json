@@ -1,0 +1,10 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/",
+  "preferredVersions": { "php": "8.4", "wp": "latest" },
+  "steps": [
+    { "step": "setSiteLanguage", "language": "ja" },
+    { "step": "activateTheme", "themeFolderName": "test-inc" },
+    { "step": "runPHP", "code": "<?php require '/wordpress/setup/seed.php';" }
+  ]
+}

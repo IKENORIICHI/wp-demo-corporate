@@ -17,6 +17,10 @@ add_action( 'after_setup_theme', function () {
 	register_nav_menus( array( 'global' => 'グローバルメニュー' ) );
 } );
 
+/* 絵文字用の外部スクリプトは使わないので読み込まない（表示の高速化） */
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
+
 /* ===========================
    CSS・JS の読み込み
    =========================== */
@@ -44,7 +48,7 @@ add_action( 'init', function () {
 		),
 		'public'       => true,
 		'has_archive'  => 'achievements',
-		'rewrite'      => array( 'slug' => 'achievements' ),
+		'rewrite'      => array( 'slug' => 'achievements', 'with_front' => false ),
 		'menu_icon'    => 'dashicons-chart-bar',
 		'menu_position'=> 5,
 		'supports'     => array( 'title', 'excerpt', 'thumbnail', 'page-attributes' ),

@@ -11,11 +11,9 @@
 - メニューは「外観 → メニュー」から編集可能
 - スマホ対応
 
-## デモを開く
+## 表示用URL（静的書き出し版）
 
-https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/IKENORIICHI/wp-demo-corporate/main/blueprint.json
-
-ブラウザ内で WordPress が起動します（表示まで10〜20秒）。管理画面（/wp-admin/）も操作できます。変更はブラウザを閉じると消えます。
+WordPress で表示したページを `scripts/export-static.mjs` で静的HTMLに書き出し、Vercel に置いている（`static/`）。お問い合わせフォームは書き出し版では送信できない。
 
 ## ローカルで動かす
 
@@ -32,4 +30,17 @@ http://127.0.0.1:9400 で表示。管理画面は /wp-admin/（自動ログイ�
 
 - `theme/test-inc/` … テーマ本体
 - `setup/seed.php` … デモ用の初期データ（ページ・実績・お知らせ・メニュー）
-- `blueprint.local.json` … WordPress Playground の起動設定
+- `blueprint.local.json` … WordPress Playground の起動設定（管理画面に自動ログイン）
+- `blueprint.export.json` … 静的書き出し用の起動設定（ログインなし）
+- `scripts/export-static.mjs` … 全ページを巡回して `static/` に書き出す
+- `static/` … 書き出したサイト（Vercel の公開対象）
+
+## 静的書き出しの手順
+
+```bash
+npx @wp-playground/cli@3.1.61 server --port=9402 \
+  --mount=./theme/test-inc:/wordpress/wp-content/themes/test-inc \
+  --mount=./setup:/wordpress/setup \
+  --blueprint=./blueprint.export.json
+node scripts/export-static.mjs http://127.0.0.1:9402 static
+```

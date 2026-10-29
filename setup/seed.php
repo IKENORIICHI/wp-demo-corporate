@@ -9,7 +9,9 @@ update_option( 'blogname', 'テスト株式会社' );
 update_option( 'blogdescription', 'AI × データ分析で未来を拓く' );
 update_option( 'timezone_string', 'Asia/Tokyo' );
 update_option( 'date_format', 'Y年n月j日' );
-update_option( 'permalink_structure', '/%postname%/' );
+/* update_option だけだと書き換えルールが古い設定のまま再生成されるため、$wp_rewrite 経由で変更する */
+global $wp_rewrite;
+$wp_rewrite->set_permalink_structure( '/%postname%/' );
 
 /* 既定のサンプル投稿・ページを削除 */
 foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'numberposts' => -1, 'post_status' => 'any' ) ) as $p ) {
@@ -40,6 +42,7 @@ update_option( 'page_for_posts', $ids['news'] );
 /* 導入実績（カスタム投稿タイプ case） */
 $cases = array(
 	array(
+		'slug'      => 'retail',
 		'title'     => '大手小売チェーン A社 — 需要予測AIで廃棄ロス30%削減',
 		'client'    => '大手小売チェーン A社',
 		'tag'       => '小売業',
@@ -49,6 +52,7 @@ $cases = array(
 		'results'   => "30%|廃棄ロス削減\n15%|機会損失削減\n3ヶ月|導入期間",
 	),
 	array(
+		'slug'      => 'manufacturing',
 		'title'     => '製造メーカー B社 — 設備異常検知で稼働停止時間50%削減',
 		'client'    => '製造メーカー B社',
 		'tag'       => '製造業',
@@ -58,6 +62,7 @@ $cases = array(
 		'results'   => "50%|稼働停止時間削減\n40%|修理コスト削減\n72h|事前予知",
 	),
 	array(
+		'slug'      => 'finance',
 		'title'     => '金融機関 C社 — 顧客分析AIで継続率15%向上',
 		'client'    => '金融機関 C社',
 		'tag'       => '金融業',
@@ -71,6 +76,7 @@ foreach ( $cases as $i => $c ) {
 	$id = wp_insert_post( array(
 		'post_type'    => 'case',
 		'post_status'  => 'publish',
+		'post_name'    => $c['slug'],
 		'post_title'   => $c['title'],
 		'post_excerpt' => $c['excerpt'],
 		'menu_order'   => $i,
@@ -84,14 +90,15 @@ foreach ( $cases as $i => $c ) {
 
 /* お知らせ（通常の投稿） */
 $news = array(
-	array( '2026-10-20 10:00:00', '年末年始休業のお知らせ', '<!-- wp:paragraph --><p>誠に勝手ながら、12月28日（月）〜1月4日（月）を年末年始休業とさせていただきます。休業期間中のお問い合わせは、1月5日（火）以降に順次ご対応いたします。</p><!-- /wp:paragraph -->' ),
-	array( '2026-10-01 10:00:00', 'AIダッシュボードに新機能「異常値アラート」を追加しました', '<!-- wp:paragraph --><p>ダッシュボード上で設定したしきい値を超えた場合に、メールとチャットで通知する機能を追加しました。詳しくは事業内容ページをご覧ください。</p><!-- /wp:paragraph -->' ),
-	array( '2026-09-15 10:00:00', 'オンラインセミナー「はじめてのデータ活用」を開催します', '<!-- wp:paragraph --><p>データ活用をこれから始める企業様向けに、無料のオンラインセミナーを開催します。お申し込みはお問い合わせフォームより承ります。</p><!-- /wp:paragraph -->' ),
+	array( 'year-end-holiday', '2026-10-20 10:00:00', '年末年始休業のお知らせ', '<!-- wp:paragraph --><p>誠に勝手ながら、12月28日（月）〜1月4日（月）を年末年始休業とさせていただきます。休業期間中のお問い合わせは、1月5日（火）以降に順次ご対応いたします。</p><!-- /wp:paragraph -->' ),
+	array( 'dashboard-alert', '2026-10-01 10:00:00', 'AIダッシュボードに新機能「異常値アラート」を追加しました', '<!-- wp:paragraph --><p>ダッシュボード上で設定したしきい値を超えた場合に、メールとチャットで通知する機能を追加しました。詳しくは事業内容ページをご覧ください。</p><!-- /wp:paragraph -->' ),
+	array( 'seminar-data-basics', '2026-09-15 10:00:00', 'オンラインセミナー「はじめてのデータ活用」を開催します', '<!-- wp:paragraph --><p>データ活用をこれから始める企業様向けに、無料のオンラインセミナーを開催します。お申し込みはお問い合わせフォームより承ります。</p><!-- /wp:paragraph -->' ),
 );
-foreach ( $news as list( $date, $title, $content ) ) {
+foreach ( $news as list( $slug, $date, $title, $content ) ) {
 	wp_insert_post( array(
 		'post_type'    => 'post',
 		'post_status'  => 'publish',
+		'post_name'    => $slug,
 		'post_date'    => $date,
 		'post_title'   => $title,
 		'post_content' => $content,
